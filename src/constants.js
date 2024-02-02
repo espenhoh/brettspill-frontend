@@ -1,11 +1,11 @@
-const prod = {
+const dev = {
   url: {
     BASE_URL: "http://brettspill.localhost:8008/",
     AUTH_URL: "http://brettspill.localhost:8008/auth",
   },
 };
 
-const dev = {
+const prod = {
   url: {
     BASE_URL: "http://brettspill.holtebu.eu/",
     AUTH_URL: "http://brettspill.holtebu.eu/auth/",
