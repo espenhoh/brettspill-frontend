@@ -12,4 +12,5 @@ const prod = {
   },
 };
 
+//process.env.NODE_ENV is set by Webpack's DefinePlugin when scripts are run with npm in package.json
 export const config = process.env.NODE_ENV === "development" ? dev : prod;
