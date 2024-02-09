@@ -1,0 +1,36 @@
+.sidenav {
+  height:100%;
+  background-color:#111;
+  overflow-x: hidden;
+  padding:2%;
+  display: inline-block;
+}
+
+.sidenav p {
+  padding:6px 8px 6px 16px;
+  text-decoration: none;
+  font-size:16px;
+  color: #c4c4c4;
+  display:block;
+}
+
+.sidenav span {
+  text-decoration: none;
+  font-size:16px;
+  color: #818181;
+}
+
+.sidenav a,
+.sidenav span {
+  padding:6px 8px 6px 16px;
+  text-decoration: none;
+  font-size:20px;
+  color: #818181;
+  display:block;
+}
+
+.sidenav a:hover,
+.sidenav a.active{
+  color:#f1f1f1;
+}
+
