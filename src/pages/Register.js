@@ -15,14 +15,6 @@ const INPUT_IDS = {
 
 //import styles from "./LoginContent.module.css";
 
-const validPass1 = (pass1) => {
-  return pass1.length > 7;
-};
-
-const validPass2 = (pass1, pass2) => {
-  return pass1 === pass2;
-};
-
 const usernameIsValid = (username) => {
   const trimmedUsername = username.trim();
   const reUsername = /^[a-z0-9\u00E6\u00F8\u00E5]*$/;
@@ -31,6 +23,14 @@ const usernameIsValid = (username) => {
 
 const emailValid = (email) => {
   return email.includes("@");
+};
+
+const validPass1 = (pass1) => {
+  return pass1.length > 7;
+};
+
+const validPass2 = (pass1, pass2) => {
+  return pass1 === pass2;
 };
 
 const Register = (props) => {
