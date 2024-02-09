@@ -11,6 +11,7 @@ module.exports = (env, argv) => {
     output: {
       filename: "bundle.js", // Output bundle file name
       path: path.resolve(__dirname, "dist"), // Output directory
+      publicPath: "/", // base path for all the assets
     },
     plugins: [
       new HtmlWebpackPlugin({
@@ -47,6 +48,7 @@ module.exports = (env, argv) => {
       }, // Serve files from this directory
       port: 3000, // Port for the development server
       open: true, // Open the default web browser when the server starts
+      historyApiFallback: true, //redirect 404s to /index.html.
     },
   };
 };
