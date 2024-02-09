@@ -87,12 +87,10 @@ const Register = (props) => {
     event.preventDefault();
     console.log(username);
     console.log(email);
-    console.log(pass1);
-    console.log(pass2);
     if (formHasError) {
       return;
     }
-    const register_url = "config.url.BASE_URL" + "/lobby/register/";
+    const register_url = config.url.BASE_URL + "/lobby/register/";
     axios
       .post(
         register_url,
