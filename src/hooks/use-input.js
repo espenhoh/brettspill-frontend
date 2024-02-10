@@ -28,8 +28,10 @@ const useInput = (defErrorMsg, validator) => {
   };
 
   const errorHandler = (errorMsg) => {
-    const msg = errorMsg.join(", ");
-    dispatchInput({ errorMsg: msg });
+    if (errorMsg !== undefined) {
+      const msg = errorMsg.join(", ");
+      dispatchInput({ errorMsg: msg });
+    }
   };
 
   const errorMsg = () => {

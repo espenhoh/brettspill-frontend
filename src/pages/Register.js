@@ -1,5 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useRef } from "react";
+import {
+  Link,
+  useNavigate,
+  Form,
+  redirect,
+  useActionData,
+} from "react-router-dom";
 import Button from "../components/UI/Button";
 import FormElement from "../components/UI/FormElement";
 import useInput from "../hooks/use-input";
@@ -76,60 +83,20 @@ const Register = (props) => {
     reset: pass2Reset,
   } = useInput("Passord matcher ikke", validPass2.bind(null, pass1));
 
+  //Pick up errors from backend.
+  const errors = useActionData();
+  console.log(errors);
+
   const usernameInputRef = useRef();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
+  if (pass1HasError) passwordInputRef.current.focus();
+  if (emailHasError) emailInputRef.current.focus();
+  if (usernameHasError) usernameInputRef.current.focus();
+
   const formHasError =
     usernameHasError || emailHasError || pass1HasError || pass2HasError;
-
-  const submitHandler = (event) => {
-    event.preventDefault();
-    console.log(username);
-    console.log(email);
-    if (formHasError) {
-      return;
-    }
-    const register_url = config.url.BASE_URL + "/lobby/register/";
-    axios
-      .post(
-        register_url,
-        {
-          username,
-          email,
-          password: pass1,
-          password2: pass2,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-
-        usernameReset();
-        emailReset();
-        pass1Reset();
-        pass2Reset();
-      })
-      .catch((error) => {
-        console.log(error);
-        if (error.response.data.username) {
-          usernameError(error.response.data.username);
-          usernameInputRef.current.focus();
-        }
-
-        if (error.response.data.email) {
-          emailError(error.response.data.email);
-          emailInputRef.current.focus();
-        }
-
-        if (error.response.data.password) {
-          pass1Error(error.response.data.password);
-          passwordInputRef.current.focus();
-        }
-      });
-  };
 
   useEffect(() => {
     document.title = "Registrer deg nå";
@@ -137,9 +104,9 @@ const Register = (props) => {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <h1>Lag en brettspillkonto</h1>
-      <form onSubmit={submitHandler} method="POST" className="form-group">
+      <Form method="post" className="form-group">
         <table>
           <tbody>
             <FormElement
@@ -151,7 +118,11 @@ const Register = (props) => {
               value={username}
               onChange={usernameChangeHandler}
               onBlur={usernameBlurHandler}
-              error={usernameErrorMsg()}
+              error={
+                usernameErrorMsg() +
+                (errors?.username && ", " + errors.username)
+              }
+              required={true}
             />
             <FormElement
               ref={emailInputRef}
@@ -163,6 +134,7 @@ const Register = (props) => {
               onChange={emailChangeHandler}
               onBlur={emailBlurHandler}
               error={emailErrorMsg()}
+              required={true}
             />
             <FormElement
               ref={passwordInputRef}
@@ -174,6 +146,7 @@ const Register = (props) => {
               onChange={pass1ChangeHandler}
               onBlur={pass1BlurHandler}
               error={pass1ErrorMsg()}
+              required={true}
             />
             <FormElement
               ref={passwordInputRef}
@@ -185,16 +158,66 @@ const Register = (props) => {
               onChange={pass2ChangeHandler}
               onBlur={pass2BlurHandler}
               error={pass2ErrorMsg()}
+              required={true}
             />
           </tbody>
         </table>
-
+        <input type="hidden" id="errors" name="Errors" value={formHasError} />
         <Button type="submit" className="reg-button" disabled={false}>
           Registrer
         </Button>
-      </form>
-    </React.Fragment>
+      </Form>
+    </>
   );
 };
+
+export async function registerAction({ request }) {
+  const formData = await request.formData();
+
+  if (formData.get("Errors") === "true") {
+    return null; //Do nothing. Validation errors are allready showing
+  }
+
+  const regData = {
+    username: formData.get("Kallenavn"),
+    email: formData.get("Kallenavn"),
+    password: formData.get("Passord"),
+    password2: formData.get("Passord igjen"),
+  };
+
+  const errors = {};
+
+  const register_url = config.url.BASE_URL + "/lobby/register/";
+  try {
+    const response = await axios.post(register_url, regData, {
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.username) {
+        errors.username = error.response.data.username;
+      }
+
+      if (error.response.data.email) {
+        errors.email = error.response.data.email;
+      }
+
+      if (error.response.data.password) {
+        errors.password = error.response.data.password;
+      }
+    } else if (error.request) {
+      return { status: 500, statusText: "Ingen kontakt" };
+    } else {
+      return { status: 500, statusText: "Noe uventet skjedde!" };
+    }
+  }
+
+  // return data if we have errors
+  if (Object.keys(errors).length) {
+    return errors;
+  }
+
+  return redirect("/login/");
+}
 
 export default Register;

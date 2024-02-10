@@ -13,7 +13,7 @@ import SpillLobby from "./pages/SpillLobby";
 import CreateGame, { spillTypeLoader, lagSpill } from "./pages/CreateGame";
 
 import "./index.css";
-import Register from "./pages/Register";
+import Register, { registerAction } from "./pages/Register";
 import IkkeFunnet from "./pages/IkkeFunnet";
 import Layout from "./pages/Layout";
 import Feilside from "./pages/Feilside";
@@ -36,7 +36,7 @@ const router = createBrowserRouter(
         action={lagSpill}
       />
       <Route path="login" element={<Login />} action={loginAction} />
-      <Route path="register" element={<Register />} />
+      <Route path="register" element={<Register />} action={registerAction} />
       <Route path="*" element={<IkkeFunnet />} />
     </Route>
   )

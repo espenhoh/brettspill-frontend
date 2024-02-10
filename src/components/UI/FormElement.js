@@ -5,7 +5,6 @@ import classes from "./Input.module.css";
 const FormElement = forwardRef((props, ref) => {
   const inputRef = useRef();
 
-
   const activate = () => {
     inputRef.current.focus();
   };
@@ -22,11 +21,13 @@ const FormElement = forwardRef((props, ref) => {
     case "dropdown":
       element = (
         <select name={props.label} id={props.id} onChange={props.onChange}>
-          {props.payload ? 
-            props.payload.map((value, index) => (
-              <option key={index} value={value.value}>{value.label}</option>
-          ))
-          : null}
+          {props.payload
+            ? props.payload.map((value, index) => (
+                <option key={index} value={value.value}>
+                  {value.label}
+                </option>
+              ))
+            : null}
         </select>
       );
       break;
@@ -40,6 +41,7 @@ const FormElement = forwardRef((props, ref) => {
           value={props.value}
           onChange={props.onChange}
           onBlur={props.onBlur}
+          required={props.required}
         />
       );
   }
