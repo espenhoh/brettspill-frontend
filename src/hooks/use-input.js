@@ -39,7 +39,7 @@ const useInput = (defErrorMsg, validator) => {
       hasError ? defErrorMsg : "",
       backendError ? inputState.errorMsg : "",
     ]
-      .filter(Boolean)
+      .filter(Boolean) //Filtrerer tomme strenger
       .join(". ");
   };
 
