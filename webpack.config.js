@@ -42,6 +42,7 @@ module.exports = (env, argv) => {
     resolve: {
       extensions: [".js", ".jsx"],
     },
+    devtool: "eval-source-map",
     devServer: {
       static: {
         directory: path.join(__dirname, "public"),
