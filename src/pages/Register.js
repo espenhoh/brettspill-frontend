@@ -84,24 +84,32 @@ const Register = (props) => {
   } = useInput("Passord matcher ikke", validPass2.bind(null, pass1));
 
   //Pick up errors from backend.
-  const errors = useActionData();
-  console.log(errors);
+  const errorResponse = useActionData();
+  console.log(errorResponse);
 
   const usernameInputRef = useRef();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
-
-  if (pass1HasError) passwordInputRef.current.focus();
-  if (emailHasError) emailInputRef.current.focus();
-  if (usernameHasError) usernameInputRef.current.focus();
 
   const formHasError =
     usernameHasError || emailHasError || pass1HasError || pass2HasError;
 
   useEffect(() => {
     document.title = "Registrer deg nå";
+    if (errorResponse) {
+      usernameError(errorResponse?.data?.username);
+      emailError(errorResponse?.data?.email);
+      pass1Error(errorResponse?.data?.password);
+    }
+
     usernameInputRef.current.focus();
-  }, []);
+  }, [errorResponse]);
+
+  /*
+  testspiller
+  test@spiller.com
+  testpassord123
+  */
 
   return (
     <>
@@ -118,10 +126,7 @@ const Register = (props) => {
               value={username}
               onChange={usernameChangeHandler}
               onBlur={usernameBlurHandler}
-              error={
-                usernameErrorMsg() +
-                (errors?.username && ", " + errors.username)
-              }
+              error={usernameErrorMsg()}
               required={true}
             />
             <FormElement
@@ -185,8 +190,6 @@ export async function registerAction({ request }) {
     password2: formData.get("Passord igjen"),
   };
 
-  const errors = {};
-
   const register_url = config.url.BASE_URL + "/lobby/register/";
   try {
     const response = await axios.post(register_url, regData, {
@@ -194,27 +197,12 @@ export async function registerAction({ request }) {
     });
   } catch (error) {
     if (error.response) {
-      if (error.response.data.username) {
-        errors.username = error.response.data.username;
-      }
-
-      if (error.response.data.email) {
-        errors.email = error.response.data.email;
-      }
-
-      if (error.response.data.password) {
-        errors.password = error.response.data.password;
-      }
+      return error.response;
     } else if (error.request) {
       return { status: 500, statusText: "Ingen kontakt" };
     } else {
       return { status: 500, statusText: "Noe uventet skjedde!" };
     }
-  }
-
-  // return data if we have errors
-  if (Object.keys(errors).length) {
-    return errors;
   }
 
   return redirect("/login/");
