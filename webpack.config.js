@@ -1,10 +1,14 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require("webpack");
 const path = require("path");
 
 //Make exports a function to be able to access args
 module.exports = (env, argv) => {
-  console.log("Current mode: ", argv.mode);
+  const mode = argv.mode;
+  const isDev = mode === "development";
+
+  console.log("Development: ", isDev);
 
   return {
     entry: "./src/index.js", // Entry point of your application
@@ -17,6 +21,7 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         template: path.join(__dirname, "src", "index.html"),
       }),
+      new MiniCssExtractPlugin({ filename: "style.css" }),
     ],
     module: {
       rules: [
@@ -42,7 +47,8 @@ module.exports = (env, argv) => {
     resolve: {
       extensions: [".js", ".jsx"],
     },
-    devtool: "eval-source-map",
+    devtool: isDev ? "eval-source-map" : false,
+
     devServer: {
       static: {
         directory: path.join(__dirname, "public"),

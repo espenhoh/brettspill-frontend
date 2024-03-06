@@ -6,7 +6,7 @@ import { authActions } from "../../store/authSlice";
 
 import styles from "./Sidenav.module.css";
 
-const checkActive = (navData) => navData.isActive ? styles.active : '';
+const checkActive = (navData) => (navData.isActive ? styles.active : "");
 
 const Sidenav = () => {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ const Sidenav = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink className={checkActive} to="/"  onClick={logoutHandler}>
+              <NavLink className={checkActive} to="/" onClick={logoutHandler}>
                 Logg ut
               </NavLink>
             </li>
@@ -54,6 +54,11 @@ const Sidenav = () => {
             <li>
               <NavLink className={checkActive} to="/login">
                 Logg inn
+              </NavLink>
+            </li>
+            <li>
+              <NavLink className={checkActive} to="/oslo_conquest">
+                Oslo Conquest
               </NavLink>
             </li>
           </React.Fragment>

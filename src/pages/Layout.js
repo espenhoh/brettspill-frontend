@@ -4,16 +4,18 @@ import { useSelector } from "react-redux";
 import Counter from "../components/UI/Counter";
 import Sidenav from "../components/Sidenav/Sidenav";
 import Logout from "../components/Content/Logout";
+import { useLocation } from "react-router-dom";
 
 import { config } from "../constants";
 
 const Layout = () => {
   const auth = useSelector((state) => state.auth);
+  const location = useLocation();
 
   return (
     <>
       {auth.logoutVisible ? <Logout /> : null}
-      <Sidenav />
+      {location.pathname !== "/oslo_conquest" ? <Sidenav /> : null}
       <main>
         <Outlet />
         <Counter />
