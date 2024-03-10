@@ -38,13 +38,14 @@ module.exports = (env, argv) => {
             },
           },
         },
+        { test: /\.json$/, type: "json" },
         {
           test: /\.css$/,
           use: ["style-loader", "css-loader"],
         },
         {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,
-          type: 'asset/resource',
+          type: "asset/resource",
         },
       ],
     },

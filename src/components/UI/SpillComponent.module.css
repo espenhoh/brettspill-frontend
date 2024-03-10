@@ -1,6 +1,21 @@
-canvas {
+.game_container_holder {
+  background-image: url("./Bydeler.png");
+  background-position: left top;
+  background-repeat: no-repeat;
+  background-color: #cccccc; /* Used if the image is unavailable */
   position: absolute;
   height: 100%;
   width: 100%;
-  margin: -2%;
+  margin: 0%;
+}
+
+canvas {
+  /*
+  display: block;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);*/
+  opacity: 0.5;
 }
