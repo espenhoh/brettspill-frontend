@@ -7,9 +7,12 @@ import SpillComponent from "../components/UI/SpillComponent";
 const OsloConquest = (props) => {
   const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    parent: "game_container",
+    scale: {
+      parent: "game_container",
+      mode: Phaser.Scale.NONE,
+      width: 767,
+      height: 811,
+    },
     scene: Example,
     physics: {
       default: "arcade",
@@ -17,6 +20,7 @@ const OsloConquest = (props) => {
         gravity: { y: 200 },
       },
     },
+    //transparent: true,
   };
 
   return (
