@@ -18,7 +18,6 @@ import IkkeFunnet from "./pages/IkkeFunnet";
 import Layout from "./pages/Layout";
 import Feilside from "./pages/Feilside";
 import { getSpillListe, getSpill, getSpillTyper } from "./util/gets";
-import OsloConquest from "./pages/OsloConquest";
 import SpillComponent from "./components/UI/SpillComponent";
 
 const router = createBrowserRouter(
