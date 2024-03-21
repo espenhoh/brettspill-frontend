@@ -57,7 +57,7 @@ const Sidenav = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink className={checkActive} to="/oslo_conquest">
+              <NavLink className={checkActive} to="/start_spill/oslo_conquest">
                 Oslo Conquest
               </NavLink>
             </li>

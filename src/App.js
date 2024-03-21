@@ -19,6 +19,7 @@ import Layout from "./pages/Layout";
 import Feilside from "./pages/Feilside";
 import { getSpillListe, getSpill, getSpillTyper } from "./util/gets";
 import OsloConquest from "./pages/OsloConquest";
+import SpillComponent from "./components/UI/SpillComponent";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,7 +38,7 @@ const router = createBrowserRouter(
         action={lagSpill}
       />
       <Route path="login" element={<Login />} action={loginAction} />
-      <Route path="oslo_conquest" element={<OsloConquest />} />
+      <Route path="start_spill/:navn" element={<SpillComponent />} />
       <Route path="register" element={<Register />} action={registerAction} />
       <Route path="*" element={<IkkeFunnet />} />
     </Route>
