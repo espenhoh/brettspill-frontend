@@ -1,11 +1,20 @@
 import Phaser from "phaser";
-import gameMap from "./oslo_conquest_map.json";
+import { GameMap } from "./GameMap";
+import oslo_conquest_map from "./oslo_conquest_map.json";
 
 class OsloConquestGame extends Phaser.Scene {
-  preload() {}
+  museTekst;
+  map;
+
+  preload() {
+    map = new GameMap(oslo_conquest_map);
+  }
 
   create() {
     let scene = this;
+
+    this.museTekst = scene.add.text(10, 10, "", { fill: "#00ff00" });
+
     let graphics = this.add.graphics();
     graphics.lineStyle(1, 0x000000, 1);
     // Tegn polygoner fra objektet
@@ -84,7 +93,6 @@ class OsloConquestGame extends Phaser.Scene {
           cameraDragStartX + (pointer.downX - pointer.x) / camera.zoom;
         camera.scrollY =
           cameraDragStartY + (pointer.downY - pointer.y) / camera.zoom;
-        console.log(pointer.x);
       }
     });
 
@@ -101,6 +109,17 @@ class OsloConquestGame extends Phaser.Scene {
       camera.scrollX -= newWorldPoint.x - worldPoint.x;
       camera.scrollY -= newWorldPoint.y - worldPoint.y;
     });
+  }
+
+  update() {
+    const pointer = this.input.activePointer;
+
+    this.museTekst.setText([
+      `x: ${pointer.worldX}`,
+      `y: ${pointer.worldY}`,
+      `isDown: ${pointer.isDown}`,
+      `rightButtonDown: ${pointer.rightButtonDown()}`,
+    ]);
   }
 }
 

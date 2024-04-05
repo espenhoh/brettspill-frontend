@@ -1,11 +1,11 @@
 {
-  "bydeler": [
+  "tiles": [
     {
       "name": {
         "text": "Stovner",
         "position": [700, 127]
       },
-      "delbydeler": [
+      "subtiles": [
         {
           "name": {
             "text": "Vestli",
@@ -70,7 +70,7 @@
         "text": "Grorud",
         "position": [599, 143]
       },
-      "delbydeler": [
+      "subtiles": [
         {
           "name": {
             "text": "Romsås",
@@ -154,7 +154,7 @@
         "text": "Alna",
         "position": [546, 263]
       },
-      "delbydeler": [
+      "subtiles": [
         {
           "name": {
             "text": "delbydel",
@@ -196,7 +196,7 @@
         "text": "Bjerke",
         "position": [460, 217]
       },
-      "delbydeler": [
+      "subtiles": [
         {
           "name": {
             "text": "delbydel",
@@ -236,7 +236,7 @@
         "text": "Østensjø",
         "position": [487, 388]
       },
-      "delbydeler": [
+      "subtiles": [
         {
           "name": {
             "text": "delbydel",
