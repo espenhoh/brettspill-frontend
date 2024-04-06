@@ -4,10 +4,11 @@ import oslo_conquest_map from "./oslo_conquest_map.json";
 
 class OsloConquestGame extends Phaser.Scene {
   museTekst;
-  map;
+  gameMap;
 
   preload() {
-    map = new GameMap(oslo_conquest_map);
+    let scene = this;
+    this.gameMap = new GameMap(oslo_conquest_map);
   }
 
   create() {
@@ -17,35 +18,17 @@ class OsloConquestGame extends Phaser.Scene {
 
     let graphics = this.add.graphics();
     graphics.lineStyle(1, 0x000000, 1);
+
     // Tegn polygoner fra objektet
-    for (const bydel of gameMap.bydeler) {
-      for (const delbydel of bydel.delbydeler) {
+    console.log(this.gameMap);
+    this.gameMap.drawMap(graphics);
+    for (const bydel of this.gameMap.map.tiles) {
+      console.log(bydel);
+      for (const delbydel of bydel.subtiles) {
+        console.log(delbydel);
         console.log(delbydel.name.text);
-        const x = delbydel.points[0][0];
-        const y = delbydel.points[0][1];
-        console.log(x + "" + y);
-        //const piece = scene.add.polygon(x, y, delbydel.points, bydel.color);
-        // Sett linjefarge og -tykkelse
-        graphics.lineStyle(2, 0x000000); // Tykkelse 2, farge grønn
-        graphics.fillStyle(bydel.color, 1); // Rød farge
 
-        // Tegn polygonlinje
-        graphics.beginPath();
-        graphics.moveTo(delbydel.points[0][0], delbydel.points[0][1]);
-        for (var i = 1; i < delbydel.points.length; i++) {
-          graphics.lineTo(delbydel.points[i][0], delbydel.points[i][1]);
-        }
-        graphics.closePath();
-        graphics.fillPath();
-        graphics.strokePath();
-
-        /*graphics.fillStyle(bydel.color, 1);
-        graphics.fillPoints(
-          delbydel.points.map(function (point) {
-            return new Phaser.Geom.Point(point[0], point[1]);
-          }),
-          true
-        );*/
+        //const piece = scene.add.polygon(0, 0, delbydel.points, bydel.color);
 
         // Plasser tekst i polygon
         let delbydelNavn = scene.add.text(
@@ -138,7 +121,15 @@ const config = {
       gravity: { y: 200 },
     },
   },
-  //transparent: true,
+  plugins: {
+    scene: [
+      {
+        key: "GameObjectFactory",
+        plugin: GameMap,
+        mapping: "add",
+      },
+    ],
+  },
 };
 
 const start_oslo_conquest = () => {
