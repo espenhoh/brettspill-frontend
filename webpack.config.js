@@ -11,7 +11,7 @@ module.exports = (env, argv) => {
   console.log("Development: ", isDev);
 
   return {
-    entry: "./src/index.js", // Entry point of your application
+    entry: "./src/index.ts", // Entry point of your application
     output: {
       filename: "bundle.js", // Output bundle file name
       path: path.resolve(__dirname, "dist"), // Output directory
@@ -26,7 +26,12 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
-          test: /\.(js|jsx)$/,
+          test: /\.tsx?$/,
+          use: 'ts-loader',
+          exclude: /node_modules/,
+        },
+        {
+          test: /\.jsx?$/,
           exclude: /node_modules/,
           use: {
             loader: "babel-loader",
@@ -50,7 +55,7 @@ module.exports = (env, argv) => {
       ],
     },
     resolve: {
-      extensions: [".js", ".jsx"],
+      extensions: [".tsx", ".ts", ".js", ".jsx"],
     },
     devtool: isDev ? "eval-source-map" : false,
 
@@ -64,3 +69,17 @@ module.exports = (env, argv) => {
     },
   };
 };
+
+
+
+
+
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
