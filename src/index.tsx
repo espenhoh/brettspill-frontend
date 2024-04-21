@@ -1,5 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 
 import "./index.css";
@@ -7,10 +7,14 @@ import App from "./App";
 //import { AuthContexProvider } from "./context/auth-context";
 import store from "./store";
 
-const root = ReactDOM.createRoot(document.getElementById("app"));
+const rootElement = document.getElementById("app")!;
+
+const root = createRoot(rootElement);
 
 root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>
+  <StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </StrictMode>
 );

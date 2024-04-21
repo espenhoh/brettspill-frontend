@@ -3,16 +3,28 @@ import { Configuration } from "webpack";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import type { Configuration as DevServerConfiguration } from "webpack-dev-server";
+
+interface Environment {
+  production: boolean;
+  // Define other environment variables here if needed
+}
+
+interface Arguments {
+  mode: "development" | "production" | "none";
+  // Define other arguments here if needed
+}
 
 //Make config a function to be able to access args
-const config: Configuration = (env, argv) => {
-  const mode = argv.mode;
-  const isDev = mode === "development";
+const config = (env: Environment, argv: Arguments): Configuration => {
+  const isDev = argv.mode === "development";
 
   console.log("Development: ", isDev);
 
   return {
-    entry: "./src/index.ts", // Entry point of your application
+    mode:
+      (argv.mode as "production" | "development" | undefined) ?? "development",
+    entry: "./src/index.tsx", // Entry point of your application
     output: {
       filename: "bundle.js", // Output bundle file name
       path: path.resolve(__dirname, "dist"), // Output directory
