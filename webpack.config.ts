@@ -1,10 +1,11 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const webpack = require("webpack");
-const path = require("path");
+import path from "path";
+import { Configuration } from "webpack";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
-//Make exports a function to be able to access args
-module.exports = (env, argv) => {
+//Make config a function to be able to access args
+const config: Configuration = (env, argv) => {
   const mode = argv.mode;
   const isDev = mode === "development";
 
@@ -69,3 +70,5 @@ module.exports = (env, argv) => {
     },
   };
 };
+
+export default config;
