@@ -10,7 +10,7 @@ import {
 import Login, { loginAction } from "./pages/Login";
 import Spilliste from "./pages/Spilliste";
 import SpillLobby from "./pages/SpillLobby";
-import CreateGame, { spillTypeLoader, lagSpill } from "./pages/CreateGame";
+import CreateGame, { lagSpill } from "./pages/CreateGame";
 
 import "./index.css";
 import Register, { registerAction } from "./pages/Register";

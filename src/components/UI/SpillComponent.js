@@ -7,7 +7,7 @@ import bydeler from "./Bydeler.png";
 
 import { useParams } from "react-router-dom";
 
-const SpillComponent = ({ newGame }) => {
+const SpillComponent = () => {
   const { navn } = useParams();
 
   const start_spill = (spill_navn) => {
