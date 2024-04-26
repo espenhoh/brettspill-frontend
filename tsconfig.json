@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "strictPropertyInitialization": false,
     "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
     "allowSyntheticDefaultImports": true /* Need for Webpack config file */,
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
@@ -9,7 +10,8 @@
     "target": "es6" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
     "jsx": "react-jsx" /* IMPORTANT! - this allows our JSX to be transpiled correctly */,
     "allowJs": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "resolveJsonModule": true
   },
   "include": ["**/*.ts", "**/*.tsx"]
 }

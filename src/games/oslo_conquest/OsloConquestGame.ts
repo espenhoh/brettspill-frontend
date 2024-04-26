@@ -3,8 +3,8 @@ import { GameMap } from "./GameMap";
 import oslo_conquest_map from "./oslo_conquest_map.json";
 
 class OsloConquestGame extends Phaser.Scene {
-  museTekst;
-  gameMap;
+  museTekst: Phaser.GameObjects.Text;
+  gameMap: GameMap;
 
   preload() {
     let scene = this;

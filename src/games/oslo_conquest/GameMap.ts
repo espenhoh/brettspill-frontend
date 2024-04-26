@@ -1,7 +1,34 @@
 import Phaser from "phaser";
 
+type Point = [number, number];
+type Points = Point[];
+
+type Name = {
+  text: string;
+  position: Point;
+};
+
+type Subtile = {
+  name: Name;
+  points: Points;
+};
+
+type Tile = {
+  name: Name;
+  subtiles: Subtile[];
+  points: Points;
+  color: number;
+};
+
+type GameMapType = {
+  tiles: Tile[];
+};
+
 export class GameMap {
-  constructor(gameMap) {
+  map: GameMapType;
+  boardPieces: BoardPiece[];
+
+  constructor(gameMap: GameMapType) {
     this.map = gameMap;
     this.boardPieces = [];
 
@@ -13,7 +40,7 @@ export class GameMap {
     }
   }
 
-  drawMap(graphics) {
+  drawMap(graphics: Phaser.GameObjects.Graphics) {
     for (const boardPiece of this.boardPieces) {
       boardPiece.draw(graphics);
     }
@@ -21,12 +48,15 @@ export class GameMap {
 }
 
 class BoardPiece {
-  constructor(points, color) {
-    this.polygon = new Phaser.Geom.Polygon(points);
+  polygon: Phaser.Geom.Polygon;
+  color: number;
+
+  constructor(points: Points, color: number) {
+    this.polygon = new Phaser.Geom.Polygon(points as any);
     this.color = color;
   }
 
-  draw(graphics) {
+  draw(graphics: Phaser.GameObjects.Graphics) {
     // Sett linjefarge og -tykkelse
     graphics.lineStyle(2, 0x000000); // Tykkelse 2, farge grønn
     graphics.fillStyle(this.color, 1); // Rød farge
