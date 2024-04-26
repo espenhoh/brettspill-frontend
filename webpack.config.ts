@@ -43,19 +43,6 @@ const config = (env: Environment, argv: Arguments): Configuration => {
           use: "ts-loader",
           exclude: /node_modules/,
         },
-        {
-          test: /\.jsx?$/,
-          exclude: /node_modules/,
-          use: {
-            loader: "babel-loader",
-            options: {
-              presets: [
-                "@babel/preset-env",
-                ["@babel/preset-react", { runtime: "automatic" }],
-              ],
-            },
-          },
-        },
         { test: /\.json$/, type: "json" },
         {
           test: /\.css$/,
