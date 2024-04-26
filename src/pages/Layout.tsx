@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useBSSelector } from "../hooks/typed-redux-hooks";
 import Counter from "../components/UI/Counter";
 import Sidenav from "../components/Sidenav/Sidenav";
 import Logout from "../components/Content/Logout";
@@ -9,7 +9,7 @@ import { useLocation } from "react-router-dom";
 import { config } from "../constants";
 
 const Layout = () => {
-  const auth = useSelector((state) => state.auth);
+  const auth = useBSSelector((state) => state.auth);
   const location = useLocation();
 
   return (
