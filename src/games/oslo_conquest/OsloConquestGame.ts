@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { GameMap } from "./GameMap";
+import type { GameMapType } from "./GameMap";
 import oslo_conquest_map from "./oslo_conquest_map.json";
 
 class OsloConquestGame extends Phaser.Scene {
@@ -8,7 +9,7 @@ class OsloConquestGame extends Phaser.Scene {
 
   preload() {
     let scene = this;
-    this.gameMap = new GameMap(oslo_conquest_map);
+    this.gameMap = new GameMap(oslo_conquest_map as GameMapType);
   }
 
   create() {

@@ -17,10 +17,10 @@ type Tile = {
   name: Name;
   subtiles: Subtile[];
   points: Points;
-  color: number;
+  color: string;
 };
 
-type GameMapType = {
+export type GameMapType = {
   tiles: Tile[];
 };
 
@@ -34,7 +34,8 @@ export class GameMap {
 
     for (const tile of this.map.tiles) {
       for (const subtile of tile.subtiles) {
-        let boardPiece = new BoardPiece(subtile.points, tile.color);
+        const tileColor = parseInt(tile.color, 16);
+        let boardPiece = new BoardPiece(subtile.points, tileColor);
         this.boardPieces.push(boardPiece);
       }
     }
