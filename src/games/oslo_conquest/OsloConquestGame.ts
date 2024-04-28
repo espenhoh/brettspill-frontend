@@ -15,7 +15,10 @@ class OsloConquestGame extends Phaser.Scene {
   create() {
     let scene = this;
 
-    this.museTekst = scene.add.text(10, 10, "", { fill: "#00ff00" });
+    const museTekstStyle: Phaser.Types.GameObjects.Text.TextStyle = {
+      backgroundColor: "#00ff00",
+    };
+    this.museTekst = scene.add.text(10, 10, "", museTekstStyle);
 
     let graphics = this.add.graphics();
     graphics.lineStyle(1, 0x000000, 1);
@@ -63,15 +66,15 @@ class OsloConquestGame extends Phaser.Scene {
     //graphics.setVisible(true);
 
     const camera = scene.cameras.main;
-    let cameraDragStartX;
-    let cameraDragStartY;
+    let cameraDragStartX: number;
+    let cameraDragStartY: number;
 
     scene.input.on("pointerdown", () => {
       cameraDragStartX = camera.scrollX;
       cameraDragStartY = camera.scrollY;
     });
 
-    scene.input.on("pointermove", (pointer) => {
+    scene.input.on("pointermove", (pointer: Phaser.Input.Pointer) => {
       if (pointer.isDown) {
         camera.scrollX =
           cameraDragStartX + (pointer.downX - pointer.x) / camera.zoom;
@@ -80,19 +83,28 @@ class OsloConquestGame extends Phaser.Scene {
       }
     });
 
-    scene.input.on("wheel", (pointer, gameObjects, deltaX, deltaY, deltaZ) => {
-      // Get the current world point under pointer.
-      const worldPoint = camera.getWorldPoint(pointer.x, pointer.y);
-      const newZoom = camera.zoom - camera.zoom * 0.001 * deltaY;
-      camera.zoom = Phaser.Math.Clamp(newZoom, 0.25, 2);
+    scene.input.on(
+      "wheel",
+      (
+        pointer: Phaser.Input.Pointer,
+        gameObjects: Array<Phaser.GameObjects.GameObject>,
+        deltaX: number,
+        deltaY: number,
+        deltaZ: number
+      ) => {
+        // Get the current world point under pointer.
+        const worldPoint = camera.getWorldPoint(pointer.x, pointer.y);
+        const newZoom = camera.zoom - camera.zoom * 0.001 * deltaY;
+        camera.zoom = Phaser.Math.Clamp(newZoom, 0.25, 2);
 
-      // Update camera matrix, so `getWorldPoint` returns zoom-adjusted coordinates.
-      camera.preRender();
-      const newWorldPoint = camera.getWorldPoint(pointer.x, pointer.y);
-      // Scroll the camera to keep the pointer under the same world point.
-      camera.scrollX -= newWorldPoint.x - worldPoint.x;
-      camera.scrollY -= newWorldPoint.y - worldPoint.y;
-    });
+        // Update camera matrix, so `getWorldPoint` returns zoom-adjusted coordinates.
+        // camera.preRender();
+        const newWorldPoint = camera.getWorldPoint(pointer.x, pointer.y);
+        // Scroll the camera to keep the pointer under the same world point.
+        camera.scrollX -= newWorldPoint.x - worldPoint.x;
+        camera.scrollY -= newWorldPoint.y - worldPoint.y;
+      }
+    );
   }
 
   update() {
@@ -119,7 +131,7 @@ const config = {
   physics: {
     default: "arcade",
     arcade: {
-      gravity: { y: 200 },
+      gravity: { x: 0, y: 200 },
     },
   },
   plugins: {
