@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { json } from "react-router-dom";
 
-function erOK(response) {
+function erOK(response: AxiosResponse) {
   return response.status >= 200 && response.status < 300;
 }
 
@@ -9,7 +9,7 @@ export async function getSpillListe() {
   return await get(`/lobby/spill/`);
 }
 
-export async function getSpill(id) {
+export async function getSpill(id: number) {
   return await get(`/lobby/spill/${id}/`);
 }
 
@@ -17,7 +17,7 @@ export async function getSpillTyper() {
   return await get("/lobby/spill/get_alle_spill_typer/");
 }
 
-async function get(url) {
+async function get(url: string) {
   const response = await axios.get(url, {
     headers: { Accept: "application/json" },
   });
