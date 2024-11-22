@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -9,7 +9,7 @@ import {
 
 import Login, { loginAction } from "./pages/Login";
 import Spilliste from "./pages/Spilliste";
-import SpillLobby from "./pages/SpillLobby";
+import SpillLobby, { loadSpillInfo } from "./pages/SpillLobby";
 import CreateGame, { lagSpill } from "./pages/CreateGame";
 
 import "./index.css";
@@ -17,7 +17,7 @@ import Register, { registerAction } from "./pages/Register";
 import IkkeFunnet from "./pages/IkkeFunnet";
 import Layout from "./pages/Layout";
 import Feilside from "./pages/Feilside";
-import { getSpillListe, getSpill, getSpillTyper } from "./util/gets";
+import { getSpillListe, getSpillTyper } from "./util/gets";
 import SpillComponent from "./components/UI/SpillComponent";
 
 const router = createBrowserRouter(
@@ -28,7 +28,7 @@ const router = createBrowserRouter(
       <Route
         path="spill/:spillId"
         element={<SpillLobby />}
-        loader={({ params }) => getSpill(params.spillId)}
+        loader={loadSpillInfo}
       />
       <Route
         path="lag_spill"
@@ -44,7 +44,7 @@ const router = createBrowserRouter(
   )
 );
 
-const App = () => {
+const App: FC = () => {
   return <RouterProvider router={router} />;
 };
 
