@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
+import { useLoaderData, useParams, LoaderFunctionArgs } from "react-router-dom";
 import dayjs from "dayjs";
 import { getSpill } from "../util/gets";
 
@@ -26,7 +26,6 @@ const SpillLobby = () => {
 
   return spillDetaljer ? (
     <section>
-      
       <h1>
         Lobby for {spillDetaljer.spill_navn} ({spillDetaljer.spill_type_navn})
       </h1>
@@ -52,6 +51,12 @@ const SpillLobby = () => {
 
 export default SpillLobby;
 
-export function spillLoader({params}) {
-  return getSpill(params.spillId);
+export function loadSpillInfo({ params }: LoaderFunctionArgs) {
+  const spillId = Number(params.spillId);
+
+  if (isNaN(spillId)) {
+    throw new Error("spillId must be a number");
+  }
+
+  return getSpill(spillId);
 }

@@ -58,7 +58,9 @@ const CreateGame = (props) => {
         {data && data.errors && (
           <ul>
             {Object.entries(data.errors).map((err) => (
-              <li key={err[1]}>{err[0]}: {err[1]}</li>
+              <li key={err[1]}>
+                {err[0]}: {err[1]}
+              </li>
             ))}
           </ul>
         )}
@@ -93,6 +95,11 @@ const CreateGame = (props) => {
     </React.Fragment>
   );
 };
+
+export interface SpillData {
+  spill_navn: string;
+  spill_type: string;
+}
 
 export const lagSpill = async ({ request }) => {
   const formData = await request.formData();

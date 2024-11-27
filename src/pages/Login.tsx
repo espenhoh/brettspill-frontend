@@ -1,21 +1,15 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { erOK } from "../util/posts";
 
 import React, { useEffect, useRef } from "react";
-import {
-  Link,
-  useNavigate,
-  Form,
-  redirect,
-  useActionData,
-} from "react-router-dom";
+import { Link, useNavigate, Form, redirect } from "react-router-dom";
+import { useActionData, ActionFunction } from "react-router-typesafe";
 import FormElement from "../components/UI/FormElement";
 import useInput from "../hooks/use-input";
 
 import { useDispatch } from "react-redux";
 import store from "../store/index";
 import { authActions } from "../store/authSlice";
-import { postNyttToken } from "../util/posts";
 
 //import styles from "./LoginContent.module.css";
 
@@ -24,23 +18,23 @@ const INPUT_IDS = {
   PASS1: "pass",
 };
 
-const validPass1 = (pass1) => {
+const validPass1 = (pass1: string) => {
   return pass1.length > 7;
 };
 
-const usernameIsValid = (username) => {
+const usernameIsValid = (username: string) => {
   const trimmedUsername = username.trim();
   const reUsername = /^[a-z0-9\u00E6\u00F8\u00E5]*$/;
   return trimmedUsername.length > 4 && reUsername.test(trimmedUsername);
 };
 
-const Login = (props) => {
+const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const errorResponse = useActionData();
+  const errorData = useActionData<typeof loginAction>();
 
-  console.log("Data ", errorResponse);
+  console.log("Data ", errorData);
 
   const {
     value: username,
@@ -64,31 +58,26 @@ const Login = (props) => {
   } = useInput("passord > 7 tegn", validPass1);
 
   useEffect(() => {
-    if (errorResponse && errorResponse.data) {
-      if (errorResponse.data.username) {
-        usernameError(errorResponse.data.username);
-      }
-      if (errorResponse.data.password) {
-        pass1Error(errorResponse.data.password);
-      }
+    if (errorData?.username !== undefined) {
+      usernameError(errorData.username);
     }
-  }, [errorResponse]);
+    if (errorData?.password) {
+      pass1Error(errorData.password);
+    }
+  }, [errorData]);
 
-  const usernameInputRef = useRef();
-  const passwordInputRef = useRef();
+  const usernameInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     document.title = "Logg inn";
-    usernameInputRef.current.focus();
+    usernameInputRef.current?.focus();
   }, []);
 
   return (
     <>
       <h1>Logg deg inn!</h1>
-      {errorResponse &&
-        errorResponse.status === 500 && (
-          <h2>{errorResponse.statusText}</h2>
-        )}
+      {errorData && errorData.status === 500 && <h2>{errorData.statusText}</h2>}
       <Form method="post">
         <table>
           <tbody>
@@ -130,7 +119,14 @@ const Login = (props) => {
 
 export default Login;
 
-export async function loginAction({ request }) {
+type ErrorData = {
+  username?: string;
+  password?: string;
+  status?: 500;
+  statusText?: "Ingen kontakt" | "Noe uventet skjedde!";
+};
+
+export const loginAction = (async ({ request }: { request: Request }) => {
   store.dispatch(authActions.login());
 
   const formData = await request.formData();
@@ -140,20 +136,26 @@ export async function loginAction({ request }) {
   };
 
   try {
-    const response = await axios.post("/lobby/login/", loginData, {
-      headers: { "Content-Type": "application/json" },
-    });
-  } catch (error) {
-    if (error.response) {
-      return error.response;
-    } else if (error.request) {
-      return { status: 500, statusText: "Ingen kontakt" };
+    const response: AxiosResponse = await axios.post(
+      "/lobby/login/",
+      loginData,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  } catch (e) {
+    if (axios.isAxiosError(e)) {
+      // Access to config, request, and response
+      const error = e as AxiosError;
+      if (error.response?.data) {
+        return error.response.data as ErrorData;
+      }
+      return { status: 500, statusText: "Ingen kontakt" } as ErrorData;
     } else {
-      return { status: 500, statusText: "Noe uventet skjedde!" };
+      // Just a stock error
+      return { status: 500, statusText: "Noe uventet skjedde!" } as ErrorData;
     }
   }
 
-  console.log(tokens);
-
   return redirect("/spill/");
-}
+}) satisfies ActionFunction;

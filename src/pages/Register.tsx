@@ -22,17 +22,17 @@ const INPUT_IDS = {
 
 //import styles from "./LoginContent.module.css";
 
-const usernameIsValid = (username) => {
+const usernameIsValid = (username: string) => {
   const trimmedUsername = username.trim();
   const reUsername = /^[a-z0-9\u00E6\u00F8\u00E5]*$/;
   return trimmedUsername.length > 6 && reUsername.test(trimmedUsername);
 };
 
-const emailValid = (email) => {
+const emailValid = (email: string) => {
   return email.includes("@");
 };
 
-const validPass1 = (pass1) => {
+const validPass1 = (pass1: string) => {
   return pass1.length > 7;
 };
 
@@ -40,7 +40,7 @@ const validPass2 = (pass1, pass2) => {
   return pass1 === pass2;
 };
 
-const Register = (props) => {
+const Register = () => {
   const {
     value: username,
     hasError: usernameHasError,
@@ -87,9 +87,9 @@ const Register = (props) => {
   const errorResponse = useActionData();
   console.log(errorResponse);
 
-  const usernameInputRef = useRef();
-  const emailInputRef = useRef();
-  const passwordInputRef = useRef();
+  const usernameInputRef = useRef<HTMLInputElement>(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
 
   const formHasError =
     usernameHasError || emailHasError || pass1HasError || pass2HasError;
@@ -102,7 +102,7 @@ const Register = (props) => {
       pass1Error(errorResponse?.data?.password);
     }
 
-    usernameInputRef.current.focus();
+    usernameInputRef.current?.focus();
   }, [errorResponse]);
 
   /*
