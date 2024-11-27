@@ -2,11 +2,15 @@ import React, { forwardRef, useRef, useImperativeHandle } from "react";
 
 import classes from "./Input.module.css";
 
-const FormElement = forwardRef((props, ref) => {
-  const inputRef = useRef();
+type Ref = HTMLInputElement;
+
+type Props = {};
+
+const FormElement = forwardRef<Ref, Props>((props, ref) => {
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const activate = () => {
-    inputRef.current.focus();
+    inputRef.current!.focus();
   };
 
   useImperativeHandle(ref, () => {
