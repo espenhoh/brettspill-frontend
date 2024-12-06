@@ -17,10 +17,6 @@ const getConfig: AxiosRequestConfig = {
   } as RawAxiosRequestHeaders,
 };
 
-export async function getSpillListe() {
-  return await get(`/lobby/spill/`);
-}
-
 interface Spiller {
   username: string;
 }
@@ -36,27 +32,32 @@ interface Spill {
   spillere: Spiller[]; // Bytt `any[]` med en spesifikk type om spillere har en bestemt struktur
 }
 
-export async function getSpillTyper() {
-  return await get("/lobby/spill/get_alle_spill_typer/");
+interface SpillListe extends Array<Spill> {}
+
+interface SpillType {}
+
+export async function getSpillListe(): Promise<SpillListe> {
+  return await fetchValidatedData<SpillListe>(`/lobby/spill/`);
+}
+
+export async function getSpillTyper(): Promise<SpillType> {
+  return await fetchValidatedData<SpillType>(
+    "/lobby/spill/get_alle_spill_typer/"
+  );
 }
 
 export async function getSpill(id: number): Promise<Spill> {
-  const data = await fetchValidatedData<Spill>(`/lobby/spill/${id}/`,
+  const data = await fetchValidatedData<Spill>(`/lobby/spill/${id}/`);
 
-  );
-
-  const response = await client.get<Spill>(`/lobby/spill/${id}/`, getConfig);
-  if (validResponse(response)) {
-  }
-
-  return response;
+  return data;
 }
 
 async function fetchValidatedData<T>(
   url: string,
   validateFn?: (response: AxiosResponse) => void
 ): Promise<T> {
-  const response = await client.get<T>(url, getConfig);
+  const baseURL = config.url.BASE_URL + url;
+  const response = await axios.get<T>(baseURL, getConfig);
 
   validResponse(response);
 
@@ -65,12 +66,12 @@ async function fetchValidatedData<T>(
 
 function validResponse(response: AxiosResponse): void {
   if (!(response.status >= 200 && response.status < 300)) {
-    throw json({ message: "Failed to fetch." }, { status: response.status });
+    throw { message: "Failed to fetch.", status: response.status };
   }
 
   const responseType = response.headers["content-type"];
   if (responseType && responseType.includes("html")) {
     const url = response.config?.url || "ukjent endepunkt";
-    throw json({ message: `Fant ikke endepunkt: ${url}` }, { status: 404 });
+    throw { message: `Fant ikke endepunkt: ${url}`, status: 404 };
   }
 }
