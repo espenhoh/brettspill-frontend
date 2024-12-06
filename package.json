@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack serve --mode=development --open",
-    "test": "jest",
+    "test": "jest --verbose",
+    "testdbug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand",
     "build": "webpack --mode=development",
-    "prod": "webpack --mode=production"
+    "prod": "webpack --mode=production",
+    "clear_jest": "jest --clearCache"
   },
   "keywords": [],
   "author": "",
