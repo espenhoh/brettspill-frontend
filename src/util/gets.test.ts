@@ -1,57 +1,59 @@
-import axios from "axios"; // Bruker den globale mocken
+import axios from "axios";
 import { getSpill } from "./gets";
 import { get } from "https";
 
-/*
 // Testdata for mock
-const data = {
-  id: 1,
-  spill_type_navn: "Monopol",
-  spill_navn: "Testspill",
-  spill_type: "MPOL",
-  opprettet_tid: "2024-11-22T23:30:39.235528Z",
-  start_tid: null,
-  slutt_tid: null,
-  spillere: [],
+const mockData = {
+  mocked: "data",
 };
 
-it("should fetch spill data", async () => {
-  // Testdata for mock
-  (axios.get as jest.Mock).mockResolvedValue({
-    data: data,
-    status: 200,
-    statusText: "Ok",
-    headers: {},
-    config: {},
+describe("Mocked axios tests", () => {
+  it("should fetch spill data", async () => {
+    // Testdata for mock
+    jest.spyOn(axios, "get").mockResolvedValueOnce({
+      data: mockData,
+      status: 200,
+      statusText: "Ok",
+      headers: {},
+      config: {},
+    });
+
+    const spill = await getSpill(1);
+
+    expect(spill).toEqual(mockData);
+    expect(axios.get).toHaveBeenCalledWith(
+      "/lobby/spill/1/",
+      expect.anything()
+    );
   });
 
-  const spill = await getSpill(1);
-
-  expect(spill).toEqual(data);
-  expect(axios.get).toHaveBeenCalledWith("/lobby/spill/1/", expect.anything());
+  /*
+  it("should fail", async () => {
+    // Testdata for mock
+    (axios.get as jest.Mock).mockRejectedValue({
+      data: mockData,
+      status: 400,
+      statusText: "Ok",
+      headers: {},
+      config: {},
+    });
+    debugger;
+    return getSpill(-1).then((spill) => {
+      expect(spill).rejects.toMatch("Failed to fetch.");
+    });
+  });
+  */
 });
 
-it("should fail", async () => {
-  // Testdata for mock
-  (axios.get as jest.Mock).mockRejectedValue({
-    data: data,
-    status: 400,
-    statusText: "Ok",
-    headers: {},
-    config: {},
-  });
-  debugger;
-  return getSpill(-1).then((spill) => {
-    expect(spill).rejects.toMatch("Failed to fetch.");
-  });
-});
+describe("Integration tests", () => {
+  it("should integrate", async () => {
+    debugger;
+    let utdata = await getSpill(1);
 
-*/
-it("should integrate", async () => {
-  // Testdata for mock
-  //const axios = jest.requireActual("axios");
-  debugger;
-  let utdata = await getSpill(1);
+    console.log(utdata);
+  });
 
-  console.log(utdata);
+  beforeEach(() => {
+    jest.resetModules();
+  });
 });
