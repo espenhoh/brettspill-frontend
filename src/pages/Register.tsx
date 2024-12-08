@@ -11,7 +11,7 @@ import Button from "../components/UI/Button";
 import FormElement from "../components/UI/FormElement";
 import useInput from "../hooks/use-input";
 
-import { config } from "../constants";
+import config from "../constants";
 
 const INPUT_IDS = {
   USERNAME: "regkallenavn",

@@ -6,7 +6,7 @@ import Sidenav from "../components/Sidenav/Sidenav";
 import Logout from "../components/Content/Logout";
 import { useLocation } from "react-router-dom";
 
-import { config } from "../constants";
+import config from "../constants";
 
 const Layout = () => {
   const auth = useBSSelector((state) => state.auth);
