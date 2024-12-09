@@ -1,16 +1,21 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, NavLinkRenderProps } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 import { authActions } from "../../store/authSlice";
 
 import styles from "./Sidenav.module.css";
 
-const checkActive = (navData) => (navData.isActive ? styles.active : "");
+import type { RootState } from "../../store/index";
+
+const checkActive = (navData: NavLinkRenderProps) =>
+  navData.isActive ? styles.active : "";
 
 const Sidenav = () => {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
 
   const logoutHandler = () => {
     dispatch(authActions.logout());
