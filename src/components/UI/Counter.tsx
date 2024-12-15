@@ -1,12 +1,18 @@
-import { useSelector, useDispatch } from "react-redux";
-import { counterIncrement, counterIncrease, counterDecrement, counterToggle } from "../../store/counterSlice";
+//import { useSelector, useDispatch } from "react-redux";
+import { useBSDispatch, useBSSelector } from "../../hooks/typed-redux-hooks";
+import {
+  counterIncrement,
+  counterIncrease,
+  counterDecrement,
+  counterToggle,
+} from "../../store/counterSlice";
 
 import classes from "./Counter.module.css";
 
 const Counter = () => {
-  const dispatch = useDispatch();
-  const counter = useSelector((state) => state.counter.counter);
-  const show = useSelector((state) => state.counter.showCounter);
+  const dispatch = useBSDispatch();
+  const counter = useBSSelector((state) => state.counter.counter);
+  const show = useBSSelector((state) => state.counter.showCounter);
 
   const toggleCounterHandler = () => {
     dispatch(counterToggle());
