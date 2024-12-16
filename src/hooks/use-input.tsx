@@ -1,36 +1,51 @@
-import { useReducer } from "react";
+import { useReducer, ChangeEvent, FocusEvent } from "react";
 
 const initalState = { value: "", isTouched: false, errorMsg: "" };
 
-const valueReducer = (state, action) => {
+const valueReducer = (state: StateType, action: ActionType) => {
   return { ...state, ...action };
 };
 
-const useInput = (defErrorMsg, validator) => {
+type StateType = {
+  value: string;
+  isTouched: boolean;
+  errorMsg: string;
+};
+
+type ActionType = {
+  value?: string;
+  isTouched?: boolean;
+  errorMsg?: string;
+};
+
+const useInput = (
+  defErrorMsg: string,
+  validator: (username: string) => boolean
+) => {
   const [inputState, dispatchInput] = useReducer(valueReducer, initalState);
 
   const valueIsValid = validator(inputState.value);
   const hasError = !valueIsValid && inputState.isTouched;
   const backendError = inputState.errorMsg.length > 0;
 
-  const valueInputHandler = (event) => {
+  const valueInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
     dispatchInput({ value: event.target.value });
   };
 
-  const inputBlurHandler = (event) => {
+  const inputBlurHandler = (event: FocusEvent<HTMLInputElement>) => {
     if (inputState.value) {
       dispatchInput({ isTouched: true });
     }
   };
 
-  const reset = (event) => {
+  const reset = () => {
     dispatchInput(initalState);
   };
 
-  const errorHandler = (errorMsg) => {
+  const errorHandler = (errorMsg: string) => {
     if (errorMsg !== undefined) {
-      const msg = errorMsg.join(", ");
-      dispatchInput({ errorMsg: msg });
+      //const msg = errorMsg.join(", ");
+      dispatchInput({ errorMsg: errorMsg });
     }
   };
 

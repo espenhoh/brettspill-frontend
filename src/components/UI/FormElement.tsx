@@ -1,12 +1,37 @@
-import React, { forwardRef, useRef, useImperativeHandle } from "react";
+import React, {
+  forwardRef,
+  useRef,
+  useImperativeHandle,
+  ChangeEvent,
+  FocusEvent,
+} from "react";
 
 import classes from "./Input.module.css";
 
-type Ref = HTMLInputElement;
+type Payload = {
+  value: string;
+  label: string;
+};
 
-type Props = {};
+type FormElementProps = {
+  ref: HTMLInputElement;
+  id: string;
+  label: string;
+  type: "text" | "password" | "email" | "dropdown";
+  hasError?: boolean;
+  value?: string;
+  onChange: (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
+  error?: string;
+  required?: boolean;
+  payload?: Payload[];
+};
 
-const FormElement = forwardRef<Ref, Props>((props, ref) => {
+type InputHandle = {
+  focus: () => void;
+};
+
+const FormElement = forwardRef<InputHandle, FormElementProps>((props, ref) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const activate = () => {
@@ -52,9 +77,7 @@ const FormElement = forwardRef<Ref, Props>((props, ref) => {
 
   return (
     <tr
-      className={`${classes.control} ${
-        props.isValid === false ? classes.invalid : ""
-      }`}
+      className={`${classes.control} ${props.hasError ? classes.invalid : ""}`}
     >
       <td>
         <label htmlFor={props.id}>{props.label}</label>
