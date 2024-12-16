@@ -28,7 +28,9 @@ const useInput = (
   const hasError = !valueIsValid && inputState.isTouched;
   const backendError = inputState.errorMsg.length > 0;
 
-  const valueInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const valueInputHandler = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     dispatchInput({ value: event.target.value });
   };
 
