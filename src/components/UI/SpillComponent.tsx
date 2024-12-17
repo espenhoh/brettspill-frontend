@@ -8,9 +8,9 @@ import bydeler from "./Bydeler.png";
 import { useParams } from "react-router-dom";
 
 const SpillComponent = () => {
-  const { navn } = useParams();
+  const { navn } = useParams<string>();
 
-  const start_spill = (spill_navn) => {
+  const start_spill = (spill_navn: string | undefined) => {
     switch (spill_navn) {
       case "oslo_conquest":
         return start_oslo_conquest();
