@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC, PropsWithChildren } from "react";
 
 const AuthContext = React.createContext({
   isLoggedIn: false,
   logoutVisible: false,
-  setLogoutVisible: () => {},
-  onLogin: () => {},
-  onLogout: (username, password) => {},
+  setLogoutVisible: (value: boolean) => {},
+  onLogin: (username: string, password: string) => {},
+  onLogout: () => {},
 });
 
-export const AuthContexProvider = (props) => {
+export const AuthContexProvider: FC<PropsWithChildren> = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [logoutVisible, setLogoutVisible] = useState(false);
 
-  const loginHandler = (username, password) => {
+  const loginHandler = (username: string, password: string) => {
     localStorage.setItem("isLoggedIn", "1");
     setIsLoggedIn(true);
   };
@@ -38,9 +38,9 @@ export const AuthContexProvider = (props) => {
       value={{
         isLoggedIn: isLoggedIn,
         logoutVisible: logoutVisible,
-        onLogout: logoutHandler,
-        onLogin: loginHandler,
         setLogoutVisible: setLogoutVisible,
+        onLogin: loginHandler,
+        onLogout: logoutHandler,
       }}
     >
       {props.children}
