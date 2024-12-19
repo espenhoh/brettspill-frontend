@@ -85,7 +85,7 @@ const Register = () => {
   } = useInput("Passord matcher ikke", validPass2.bind(null, pass1));
 
   //Pick up errors from backend.
-  const errorResponse = useActionData<ErrorResponse>();
+  const errorResponse = useActionData() as ErrorResponse;
   console.log(errorResponse);
 
   const usernameInputRef = useRef<HTMLInputElement>(null);
@@ -93,7 +93,9 @@ const Register = () => {
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
   const formHasError =
-    usernameHasError || emailHasError || pass1HasError || pass2HasError;
+    usernameHasError || emailHasError || pass1HasError || pass2HasError
+      ? "Errors"
+      : undefined;
 
   useEffect(() => {
     document.title = "Registrer deg nå";
@@ -181,7 +183,7 @@ export async function registerAction({
   request,
 }: {
   request: Request;
-}): Promise<ErrorResponse> {
+}): Promise<Response | ErrorResponse> {
   const formData = await request.formData();
 
   if (formData.get("Errors") === "true") {
@@ -205,7 +207,7 @@ export async function registerAction({
       headers: { "Content-Type": "application/json" },
     });
 
-    <Navigate to="home" />;
+    return redirect("/login/");
   } catch (err) {
     const error = err as Error | AxiosError;
     if (axios.isAxiosError(error)) {
