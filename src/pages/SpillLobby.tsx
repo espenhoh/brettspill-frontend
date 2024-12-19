@@ -2,10 +2,15 @@ import { useEffect, useState } from "react";
 import { useLoaderData, useParams, LoaderFunctionArgs } from "react-router-dom";
 import dayjs from "dayjs";
 import { getSpill } from "../util/gets";
+import { Spill } from "../types/api";
 
 const SpillLobby = () => {
   const params = useParams();
-  const spillDetaljer = useLoaderData().data;
+  const spillDetaljer = useLoaderData() as Spill;
+
+  if (!params.spillId) {
+    throw { message: "Ingen spillid", status: 500 };
+  }
 
   const id = parseInt(params.spillId);
 
@@ -17,7 +22,7 @@ const SpillLobby = () => {
     spillDetaljer.spillere && spillDetaljer.spillere.length > 0 ? (
       <ul>
         {spillDetaljer.spillere.map((spiller) => (
-          <li key={spiller}>{spiller}</li>
+          <li key={spiller.username}>{spiller.username}</li>
         ))}
       </ul>
     ) : (
