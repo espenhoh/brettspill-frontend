@@ -4,6 +4,7 @@ import axios, {
   RawAxiosRequestHeaders,
 } from "axios";
 import config from "../constants";
+import type { Spill, Spiller, SpillListe, SpillType } from "../types/api";
 import { json } from "react-router-dom";
 import { z } from "zod";
 
@@ -17,31 +18,12 @@ const getConfig: AxiosRequestConfig = {
   } as RawAxiosRequestHeaders,
 };
 
-interface Spiller {
-  username: string;
-}
-
-interface Spill {
-  id: number;
-  spill_type_navn: string;
-  spill_navn: string;
-  spill_type: string;
-  opprettet_tid: string;
-  start_tid: string | null;
-  slutt_tid: string | null;
-  spillere: Spiller[]; // Bytt `any[]` med en spesifikk type om spillere har en bestemt struktur
-}
-
-interface SpillListe extends Array<Spill> {}
-
-interface SpillType {}
-
 export async function getSpillListe(): Promise<SpillListe> {
   return await fetchValidatedData<SpillListe>(`/lobby/spill/`);
 }
 
-export async function getSpillTyper(): Promise<SpillType> {
-  return await fetchValidatedData<SpillType>(
+export async function getSpillTyper(): Promise<SpillType[]> {
+  return await fetchValidatedData<SpillType[]>(
     "/lobby/spill/get_alle_spill_typer/"
   );
 }
