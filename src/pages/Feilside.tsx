@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useRouteError, isRouteErrorResponse } from "react-router-dom";
+import { useRouteError} from "react-router-dom";
 import Logout from "../components/Content/Logout";
 import Sidenav from "../components/Sidenav/Sidenav";
 import { extractErrorMessage } from "../util/errorHandling";

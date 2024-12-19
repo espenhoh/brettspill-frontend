@@ -10,7 +10,7 @@ import {
 import Login, { loginAction } from "./pages/Login";
 import Spilliste from "./pages/Spilliste";
 import SpillLobby, { loadSpillInfo } from "./pages/SpillLobby";
-import CreateGame, { lagSpill } from "./pages/CreateGame";
+import CreateGame, { lagSpillAction } from "./pages/CreateGame";
 
 import "./index.css";
 import Register, { registerAction } from "./pages/Register";
@@ -34,7 +34,7 @@ const router = createBrowserRouter(
         path="lag_spill"
         element={<CreateGame />}
         loader={getSpillTyper}
-        action={lagSpill}
+        action={lagSpillAction}
       />
       <Route path="login" element={<Login />} action={loginAction} />
       <Route path="start_spill/:navn" element={<SpillComponent />} />

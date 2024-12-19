@@ -6,6 +6,7 @@ import {
   Form,
   redirect,
   useActionData,
+  ErrorResponse,
 } from "react-router-dom";
 import Button from "../components/UI/Button";
 import FormElement from "../components/UI/FormElement";
@@ -84,7 +85,7 @@ const Register = () => {
   } = useInput("Passord matcher ikke", validPass2.bind(null, pass1));
 
   //Pick up errors from backend.
-  const errorResponse = useActionData<ErrorResponse | null>();
+  const errorResponse = useActionData<ErrorResponse>();
   console.log(errorResponse);
 
   const usernameInputRef = useRef<HTMLInputElement>(null);
@@ -176,22 +177,16 @@ const Register = () => {
   );
 };
 
-interface RegisterActionParams {
-  request: Request;
-}
-
-interface ErrorResponse {
-  status: number;
-  statusText: string;
-}
-
 export async function registerAction({
   request,
-}: RegisterActionParams): Promise<AxiosResponse | ErrorResponse> {
+}: {
+  request: Request;
+}): Promise<ErrorResponse> {
   const formData = await request.formData();
 
   if (formData.get("Errors") === "true") {
     return {
+      data: {},
       status: 400,
       statusText: "Du prøvde å registrere deg med feil input.",
     };
@@ -209,30 +204,31 @@ export async function registerAction({
     const response = await axios.post(register_url, regData, {
       headers: { "Content-Type": "application/json" },
     });
+
+    <Navigate to="home" />;
   } catch (err) {
     const error = err as Error | AxiosError;
     if (axios.isAxiosError(error)) {
       // Access to config, request, and response
       if (error.response) {
-        return error.response;
+        return {
+          data: error.response.data || {},
+          status: error.response.status || 500,
+          statusText: error.response.statusText || "Ukjent feil.",
+        };
       } else if (error.request) {
-        return { status: 500, statusText: "Ingen kontakt" };
+        return { data: {}, status: 500, statusText: "Ingen kontakt" };
       } else {
         return {
+          data: {},
           status: 500,
-          statusText: `Noe uventet skjedde! ${error.message}`,
+          statusText: `Uventet feil: ${error.message}`,
         };
       }
     } else {
       throw error;
     }
   }
-
-  redirect("/login/");
-  return {
-    status: 200,
-    statusText: "Du blir omdirigert.",
-  };
 }
 
 export default Register;

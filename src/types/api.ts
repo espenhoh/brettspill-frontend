@@ -5,10 +5,6 @@ export type SpillError = {
   };
 };
 
-export type Spiller = {
-  username: string;
-};
-
 export type Spill = {
   id: number;
   spill_type_navn: string;
@@ -18,6 +14,10 @@ export type Spill = {
   start_tid: string | null;
   slutt_tid: string | null;
   spillere: Spiller[]; // Bytt `any[]` med en spesifikk type om spillere har en bestemt struktur
+};
+
+export type Spiller = {
+  username: string;
 };
 
 export interface SpillListe extends Array<Spill> {}
