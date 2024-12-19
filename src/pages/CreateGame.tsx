@@ -6,25 +6,30 @@ import {
   redirect,
   useActionData,
 } from "react-router-dom";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, ChangeEvent, FC } from "react";
 
 import Button from "../components/UI/Button";
 import FormElement from "../components/UI/FormElement";
 import useInput from "../hooks/use-input";
 import { postNyttSpill } from "../util/posts";
+import { Spill, SpillError, SpillType } from "../types/api";
 
 const INPUT_IDS = {
   spillNavn: "spillnavn",
   spilltype: "spilltype",
 };
 
+export type SpillTypeData = {
+  spillTypeNavn: SpillType[];
+};
+
 //import styles from "./LoginContent.module.css";
 
-const CreateGame = (props) => {
-  const data = useActionData();
-  const spillTypeNavn = useLoaderData().data;
+const CreateGame: FC = () => {
+  const nyttSpill = useActionData() as Spill | SpillError;
+  const { spillTypeNavn } = useLoaderData() as SpillTypeData; //getSpillTyper(): Promise<SpillType[]>
 
-  const [spillType, setSpillType] = useState();
+  const [spillType, setSpillType] = useState<string>();
 
   const navigate = useNavigate();
 
@@ -38,16 +43,18 @@ const CreateGame = (props) => {
     reset: spillNavnReset,
   } = useInput("", () => true);
 
-  const spillNavnInputRef = useRef();
-  const spillTypeInputRef = useRef();
+  const spillNavnInputRef = useRef<HTMLInputElement>(null);
+  const spillTypeInputRef = useRef(null);
 
   useEffect(() => {
     document.title = "Opprett et spill";
     setSpillType(spillTypeNavn[0].value);
   }, []);
 
-  const spillTypeChangeHandler = (e) => {
-    setSpillType(e.target.value);
+  const spillTypeChangeHandler = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setSpillType(event.target.value);
   };
 
   return (
@@ -55,11 +62,11 @@ const CreateGame = (props) => {
       <h1>Opprett et spill:</h1>
 
       <Form method="POST" className="form-group">
-        {data && data.errors && (
+        {nyttSpill && isSpillError(nyttSpill) && (
           <ul>
-            {Object.entries(data.errors).map((err) => (
-              <li key={err[1]}>
-                {err[0]}: {err[1]}
+            {Object.entries(nyttSpill.errors).map((err) => (
+              <li key={err[1][0]}>
+                {err[0]}: {err[1][0]}
               </li>
             ))}
           </ul>
@@ -76,6 +83,7 @@ const CreateGame = (props) => {
               onChange={spillNavnChangeHandler}
               onBlur={spillNavnBlurHandler}
               error={spillNavnErrorMsg()}
+              required={true}
             />
             <FormElement
               ref={spillTypeInputRef}
@@ -101,22 +109,26 @@ export interface SpillData {
   spill_type: string;
 }
 
-export const lagSpill = async ({ request }) => {
+function isSpillError(nyttSpill: Spill | SpillError): nyttSpill is SpillError {
+  return (nyttSpill as SpillError).errors !== undefined;
+}
+
+export const lagSpillAction = async ({ request }: { request: Request }) => {
   const formData = await request.formData();
 
   const spill_data = {
-    spill_navn: formData.get("Spillnavn"),
-    spill_type: formData.get("Spilltype"),
+    spill_navn: formData.get("Spillnavn") as string,
+    spill_type: formData.get("Spilltype") as string,
   };
 
   const nyttSpill = await postNyttSpill(spill_data);
 
-  if (nyttSpill.errors) {
+  if (isSpillError(nyttSpill)) {
     return nyttSpill;
+  } else {
+    const ny_url = `/spill/${nyttSpill.id}/`;
+    return redirect(ny_url);
   }
-
-  const ny_url = `/spill/${nyttSpill.id}/`;
-  return redirect(ny_url);
 };
 
 export default CreateGame;
