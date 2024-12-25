@@ -11,7 +11,8 @@
     "jsx": "react-jsx" /* IMPORTANT! - this allows our JSX to be transpiled correctly */,
     "allowJs": true,
     "moduleResolution": "node",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["@testing-library/jest-dom"]
   },
   "include": ["**/*.ts", "**/*.tsx", "jest.config.js"]
 }
