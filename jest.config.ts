@@ -2,6 +2,7 @@ import type { JestConfigWithTsJest } from "ts-jest";
 
 const config: JestConfigWithTsJest = {
   verbose: true,
+  testEnvironment: "jsdom",
   setupFilesAfterEnv: ["./jest.setup.ts"],
   transform: {
     "^.+.tsx?$": [
