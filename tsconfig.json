@@ -1,18 +1,20 @@
 {
   "compilerOptions": {
-    "strictPropertyInitialization": false,
+    "strictPropertyInitialization": true,
     "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
     "allowSyntheticDefaultImports": true /* Need for Webpack config file */,
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
     "strict": true /* Enable all strict type-checking options. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "outDir": "./dist/",
-    "target": "esnext" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "target": "ESNext" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "module": "NodeNext",
     "jsx": "react-jsx" /* IMPORTANT! - this allows our JSX to be transpiled correctly */,
     "allowJs": true,
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "types": ["@testing-library/jest-dom"]
   },
-  "include": ["**/*.ts", "**/*.tsx", "jest.config.js"]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "./*.ts", "__test__"]
 }
