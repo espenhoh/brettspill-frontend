@@ -1,0 +1,13 @@
+import { render, screen } from "@testing-library/react";
+import Login from "./Login";
+
+test("renders Logg deg inn!", () => {
+  //Arrange
+  render(<Login />);
+
+  //Act
+
+  //Assert
+  const logginElement = screen.getByText("Logg deg inn!", { exact: true });
+  expect(logginElement).toBeInTheDocument();
+});
