@@ -1,16 +1,15 @@
-import { FC } from "react";
+import { FC, PropsWithChildren } from "react";
 
 import classes from "./Button.module.css";
 
-type PropsType = {
+interface Props extends PropsWithChildren {
   type?: "button" | "submit" | "reset";
   className: string;
   disabled: boolean;
   onClick?: (values: any) => void;
-  children?: React.ReactNode
-};
+}
 
-const Button: FC<PropsType> = (props) => {
+const Button: FC<Props> = (props) => {
   return (
     <button
       type={props.type || "button"}
@@ -18,7 +17,7 @@ const Button: FC<PropsType> = (props) => {
       onClick={props.onClick}
       disabled={props.disabled}
     >
-      {props. children}
+      {props.children}
     </button>
   );
 };
